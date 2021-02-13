@@ -3,7 +3,7 @@ services:
   diagram-service:
     build:
       context: diagram-service
-      dockerfile: dev.dockerfile
+      dockerfile: Dockerfile
     image: diagram-service
     entrypoint: ["bash"]
     command: -c "python input.py"
