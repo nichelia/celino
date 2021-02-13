@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  diagram-service:
+    build:
+      context: diagram-service
+      dockerfile: Dockerfile
+    image: diagram-service
+    entrypoint: ["bash"]
+    command: -c "python input.py"
+    volumes:
+      - ./diagram-service/generate_diagrams.py:/tmp/input.py
+      - ./diagram-service/bin:/tmp/bin
+
+networks:
+  celino:
