@@ -1,24 +1,5 @@
 version: "3.8"
 services:
-  diagram-service:
-    build:
-      context: diagram-service
-      dockerfile: Dockerfile
-    image: diagram-service
-    entrypoint: ["bash"]
-    command: -c "python input.py"
-    volumes:
-      - ./diagram-service/generate_diagrams.py:/tmp/input.py
-      - ./diagram-service/bin:/tmp/bin
-  
-  clearly-server:
-    build:
-      context: clearly-server
-      dockerfile: Dockerfile
-    image: clearly-server
-    command: server "${BROKER_URI}"
-    networks:
-      - celino
 
   clearly-client-info:
     build:
@@ -31,6 +12,26 @@ services:
       - ./clearly-client-info/app.py:/tmp/app.py
     networks:
       - celino
+
+  clearly-server:
+    build:
+      context: clearly-server
+      dockerfile: Dockerfile
+    image: clearly-server
+    command: server "${BROKER_URI}"
+    networks:
+      - celino
+
+  diagram-service:
+    build:
+      context: diagram-service
+      dockerfile: Dockerfile
+    image: diagram-service
+    entrypoint: ["bash"]
+    command: -c "python app.py"
+    volumes:
+      - ./diagram-service/app.py:/tmp/app.py
+      - ./diagram-service/bin:/tmp/bin
 
 networks:
   celino:
