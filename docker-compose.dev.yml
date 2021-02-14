@@ -10,6 +10,15 @@ services:
     volumes:
       - ./diagram-service/generate_diagrams.py:/tmp/input.py
       - ./diagram-service/bin:/tmp/bin
+  
+  clearly-server:
+    build:
+      context: clearly-server
+      dockerfile: Dockerfile
+    image: clearly-server
+    command: server "${BROKER_URI}"
+    networks:
+      - celino
 
 networks:
   celino:
