@@ -20,15 +20,15 @@ services:
     networks:
       - celino
 
-  clearly-client-stats:
+  clearly-client-info:
     build:
-      context: clearly-client-stat
+      context: clearly-client-info
       dockerfile: Dockerfile
-    image: clearly-client-stat
+    image: clearly-client-info
     entrypoint: ["bash"]
     command: -c "python app.py"
     volumes:
-      - ./clearly-client-stat/app.py:/tmp/app.py
+      - ./clearly-client-info/app.py:/tmp/app.py
     networks:
       - celino
 
