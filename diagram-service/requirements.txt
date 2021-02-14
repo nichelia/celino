@@ -1,1 +1,1 @@
-diagrams
+diagrams==0.18
