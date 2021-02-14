@@ -12,8 +12,11 @@ services:
       - ./diagram-service/bin:/tmp/bin
   
   clearly-server:
-    image: rsalmei/clearly
-    command: server redis://host.docker.internal:6379/2
+    build:
+      context: clearly-server
+      dockerfile: Dockerfile
+    image: clearly-server
+    command: server "${BROKER_URI}"
     networks:
       - celino
 
