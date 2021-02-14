@@ -10,6 +10,12 @@ services:
     volumes:
       - ./diagram-service/generate_diagrams.py:/tmp/input.py
       - ./diagram-service/bin:/tmp/bin
+  
+  clearly-server:
+    image: rsalmei/clearly
+    command: server redis://host.docker.internal:6379/2
+    networks:
+      - celino
 
 networks:
   celino:
