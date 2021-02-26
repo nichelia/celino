@@ -11,7 +11,20 @@ services:
     volumes:
       - ./clearly-client-info/app.py:/tmp/app.py
     networks:
-      - celino
+      - clearly
+
+  clearly-client-task:
+    build:
+      context: clearly-client-task
+      dockerfile: Dockerfile
+    image: clearly-client-task
+    entrypoint: ["bash"]
+    command: -c "python -m app.pre_start && python -m app.main"
+    volumes:
+      - ./clearly-client-task/app:/tmp/app
+    networks:
+      - api
+      - clearly
 
   clearly-server:
     build:
@@ -20,7 +33,7 @@ services:
     image: clearly-server
     command: server "${BROKER_URI}"
     networks:
-      - celino
+      - clearly
 
   diagram-service:
     build:
@@ -33,5 +46,42 @@ services:
       - ./diagram-service/app.py:/tmp/app.py
       - ./diagram-service/bin:/tmp/bin
 
+  task-service:
+    build:
+      context: task-service
+      dockerfile: Dockerfile
+    image: task-service
+    entrypoint: ["bash"]
+    command: -c "python -m app.pre_start && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
+    # command: -c "python -m app.pre_start && python -m app.init_data && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
+    environment:
+      - POSTGRES_SERVER=task_db
+      - POSTGRES_USER=task_db_username
+      - POSTGRES_PASSWORD=task_db_password
+      - POSTGRES_DB=task_db
+    volumes:
+      - ./task-service/app:/tmp/app
+    ports:
+      - 3001:8000
+    networks:
+      - api
+      - databases
+
+  task_db:
+    image: bitnami/postgresql
+    environment:
+      - POSTGRESQL_USERNAME=task_db_username
+      - POSTGRESQL_PASSWORD=task_db_password
+      - POSTGRESQL_DATABASE=task_db
+    volumes:
+      - task_db_data:/bitnami/postgresql
+    networks:
+      - databases
+
+volumes:
+  task_db_data:
+
 networks:
-  celino:
+  api:
+  clearly:
+  databases:

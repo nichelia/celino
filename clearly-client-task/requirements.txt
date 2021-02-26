@@ -1,0 +1,4 @@
+clearly==0.9
+httpx==0.16
+pydantic==1.7
+tenacity==6.3
