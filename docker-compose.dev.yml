@@ -52,8 +52,8 @@ services:
       dockerfile: Dockerfile
     image: task-service
     entrypoint: ["bash"]
-    command: -c "python -m app.pre_start && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
-    # command: -c "python -m app.pre_start && python -m app.init_data && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
+    command: -c "python -m app.pre_run && python -m app.run"
+    # command: -c "python -m app.pre_run && python -m app.init_data && python -m app.run"
     environment:
       - POSTGRES_SERVER=task_db
       - POSTGRES_USER=task_db_username

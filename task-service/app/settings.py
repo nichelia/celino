@@ -16,7 +16,15 @@ class Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
+    PROJECT_PREFIX: Optional[str] = None
     DATABASE_URI: Optional[PostgresDsn] = None
+
+    @validator("PROJECT_PREFIX", pre=True)
+    def assemble_project_prefix(cls, v: Optional[str], values: Dict[str, Any]) -> str:
+        if isinstance(v, str):
+            return v
+        project_name = values.get("PROJECT_NAME")
+        return "_".join(k.lower() for k in project_name.split())
 
     @validator("DATABASE_URI", pre=True)
     def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
