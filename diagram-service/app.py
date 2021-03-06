@@ -6,7 +6,12 @@ from diagrams.onprem.monitoring import Prometheus, Grafana
 
 
 def generate_overview_diagram():
-    with Diagram("Overview", show=False, filename="bin/overview"):
+    
+    graph_attr = {
+        "bgcolor": "transparent"
+    }
+
+    with Diagram("Overview", show=False, filename="bin/overview", graph_attr=graph_attr):
 
         with Cluster("Client"):
             webapp =  Angular("webapp")
