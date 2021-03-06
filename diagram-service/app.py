@@ -1,8 +1,8 @@
 from diagrams import Cluster, Diagram
+from diagrams.onprem.inmemory import Redis
+from diagrams.onprem.monitoring import Grafana, Prometheus
 from diagrams.programming.framework import Angular
 from diagrams.programming.language import Python
-from diagrams.onprem.inmemory import Redis
-from diagrams.onprem.monitoring import Prometheus, Grafana
 
 
 def generate_overview_diagram():
