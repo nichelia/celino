@@ -32,29 +32,29 @@ class CRUDBase(Generic[ReturnSchemaType, CreateSchemaType, UpdateSchemaType]):
         query = self.model.insert().values(**obj_in_data)
         return await asyncSession.execute(query=query)
 
-    async def read(self, id: Any) -> Optional[ReturnSchemaType]:
-        query = self.model.select(self.model.c.id==id)
+    async def read(self, uuid: str) -> Optional[ReturnSchemaType]:
+        query = self.model.select(self.model.c.uuid == uuid)
         return await asyncSession.fetch_one(query=query)
 
     async def update(
         self,
         *,
-        id: Any,
+        uuid: str,
         obj_in: UpdateSchemaType
     ) -> ReturnSchemaType:
         query = (
             self.model
             .update()
-            .where(self.model.c.id == id)
+            .where(self.model.c.uuid == uuid)
             .values(**obj_in.dict())
         )
         return await asyncSession.execute(query=query)
 
-    async def delete(self, *, id: int) -> ReturnSchemaType:
+    async def delete(self, *, uuid: str) -> ReturnSchemaType:
         query = (
             self.model
             .delete()
-            .where(self.model.c.id == id)
+            .where(self.model.c.uuid == uuid)
         )
         return await asyncSession.execute(query=query)
 

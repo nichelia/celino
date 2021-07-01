@@ -27,7 +27,7 @@ async def read_tasks() -> Any:
     return tasks
 
 
-@router.post("/", response_model=schemas.Task)
+@router.post("/", response_model=schemas.TaskCreate)
 async def create_task(
     *,
     task_in: schemas.TaskCreate,
@@ -35,38 +35,35 @@ async def create_task(
     """
     Create new task.
     """
-    task_id = await crud.task.create(obj_in=task_in)
-    response = {
-        'id': task_id,
-        **task_in.dict()
-    }
+    await crud.task.create(obj_in=task_in)
+    response = task_in.dict()
     return response
 
 
-@router.get("/{id}", response_model=schemas.Task)
+@router.get("/{uuid}", response_model=schemas.Task)
 async def read_task(
     *,
-    id: int,
+    uuid: str,
 ) -> Any:
     """
-    Read task by ID.
+    Read task by UUID.
     """
-    task = await crud.task.read(id=id)
+    task = await crud.task.read(uuid=uuid)
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
     return task
 
 
-@router.put("/{id}", response_model=schemas.Task)
+@router.put("/{uuid}", response_model=schemas.TaskUpdate)
 async def update_task(
     *,
-    id: int,
+    uuid: str,
     task_in: schemas.TaskUpdate,
 ) -> Any:
     """
     Update an task.
     """
-    task = await crud.task.read(id=id)
+    task = await crud.task.read(uuid=uuid)
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
 
@@ -78,25 +75,25 @@ async def update_task(
     obj_in_db = schemas.TaskUpdate(**task)
     updated_obj = obj_in_db.copy(update=update_data)
 
-    task = await crud.task.update(id=id, obj_in=updated_obj)
+    task = await crud.task.update(uuid=uuid, obj_in=updated_obj)
     response = {
-        'id': id,
+        'uuid': uuid,
         **updated_obj.dict()
     }
     return response
 
 
-@router.delete("/{id}", response_model=schemas.Task)
+@router.delete("/{uuid}", response_model=schemas.Task)
 async def delete_task(
     *,
-    id: int,
+    uuid: str,
 ) -> Any:
     """
     Delete an task.
     """
-    task = await crud.task.read(id=id)
+    task = await crud.task.read(uuid=uuid)
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
 
-    await crud.task.delete(id=id)
+    await crud.task.delete(uuid=uuid)
     return task
