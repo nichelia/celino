@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "Task Service"
     PROJECT_DESCRIPTION: str = "Task Service API"
     API_ENDPOINT: str = "/api/v1/tasks"
+    WS_ENDPOINT: str = "/ws"
     LOG_LEVEL: str = "DEBUG"
     LOG_DIR: str = ""
     POSTGRES_SERVER: str

@@ -9,16 +9,16 @@ from app import crud, models, schemas
 from app.db import asyncSession
 
 
-router = APIRouter()
+api_router = APIRouter()
 
 
-@router.get("/version", response_class=JSONResponse)
+@api_router.get("/version", response_class=JSONResponse)
 def version():
     version = {"version": __version__}
     return JSONResponse(status_code=200, content=version)
 
 
-@router.get("/", response_model=List[schemas.Task])
+@api_router.get("/", response_model=List[schemas.Task])
 async def read_tasks() -> Any:
     """
     Read tasks.
@@ -27,7 +27,7 @@ async def read_tasks() -> Any:
     return tasks
 
 
-@router.post("/", response_model=schemas.TaskCreate)
+@api_router.post("/", response_model=schemas.TaskCreate)
 async def create_task(
     *,
     task_in: schemas.TaskCreate,
@@ -40,7 +40,7 @@ async def create_task(
     return response
 
 
-@router.get("/{uuid}", response_model=schemas.Task)
+@api_router.get("/{uuid}", response_model=schemas.Task)
 async def read_task(
     *,
     uuid: str,
@@ -54,7 +54,7 @@ async def read_task(
     return task
 
 
-@router.put("/{uuid}", response_model=schemas.TaskUpdate)
+@api_router.put("/{uuid}", response_model=schemas.TaskUpdate)
 async def update_task(
     *,
     uuid: str,
@@ -83,7 +83,7 @@ async def update_task(
     return response
 
 
-@router.delete("/{uuid}", response_model=schemas.Task)
+@api_router.delete("/{uuid}", response_model=schemas.Task)
 async def delete_task(
     *,
     uuid: str,

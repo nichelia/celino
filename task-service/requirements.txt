@@ -7,3 +7,4 @@ SQLAlchemy==1.3
 tenacity==6.3
 timing-asgi==0.2
 uvicorn==0.13
+websockets==9.1

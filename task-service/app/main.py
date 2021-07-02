@@ -3,12 +3,13 @@ from timing_asgi import TimingMiddleware
 from timing_asgi.integrations import StarletteScopeToName
 
 from app._version import __version__
-from app.api import router
+from app.api import api_router
 from app.db import asyncSession
 from app.logger import LOGGER, setup_logger
 from app.logo import render
 from app.middleware import ReportTimings
 from app.settings import settings
+from app.ws import ws_router
 
 
 app = FastAPI(
@@ -37,4 +38,5 @@ app.add_middleware(
     client=ReportTimings(),
     metric_namer=StarletteScopeToName(prefix=settings.PROJECT_PREFIX, starlette_app=app)
 )
-app.include_router(router, prefix=settings.API_ENDPOINT)
+app.include_router(api_router, prefix=settings.API_ENDPOINT)
+app.include_router(ws_router, prefix=settings.WS_ENDPOINT)
